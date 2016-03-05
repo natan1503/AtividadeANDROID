@@ -2,7 +2,7 @@ package br.edu.ifpb.atividadeandroid.util;
 
 import android.util.Log;
 
-import org.json.JSONObject;
+
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -17,7 +17,7 @@ import java.net.URL;
 public class HttpService {
 
     // IP da máquina onde se encontra o servidor. response
-    private static final String URL_CONTEXT = "http://ladoss.com.br:8773/pesquisa-simpif-service/services/";
+    private static final String URL_CONTEXT = "http://192.168.1.32:8080/pesquisa-simpif-service/services/";
 
     public static HttpURLConnection sendGetRequest(String service)
             throws MalformedURLException, IOException{
@@ -33,12 +33,13 @@ public class HttpService {
         return connection;
     }
 
-    public static Response sendJSONPostResquest(String service, JSONObject jsonObject)
+    public static Response sendJSONPostResquest(String service, String jsonObject)
             throws MalformedURLException, IOException {
 
         HttpURLConnection connection = null;
         Response response = null;
 
+        // Url Base e Serviço.
         URL url = new URL(URL_CONTEXT + service);
 
         connection = (HttpURLConnection) url.openConnection();
@@ -55,6 +56,7 @@ public class HttpService {
         stream.flush();
         stream.close();
 
+        // Resposta HTTP - Código e Conteúdo.
         int httpCode = connection.getResponseCode();
         String content = getHttpContent(connection);
         response = new Response(httpCode, content);
